@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "Tables.h"
 
 float Tables::g_sinTab[kSinePoints+1];

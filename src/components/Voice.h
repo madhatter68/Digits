@@ -106,7 +106,7 @@ public:
 	// Set the subvoice pointer (for optimization of orch/phat/unison mode)
 	void SetNextSubVoice(Voice* nextSubVoice)
     {
-        fprintf(stderr, "SetNextSubVoice %p -> %p\n", this, nextSubVoice);
+        //fprintf(stderr, "SetNextSubVoice %p -> %p\n", this, nextSubVoice);
         m_nextSubVoice = nextSubVoice;
         if (nextSubVoice)
             nextSubVoice->SetIsSubVoice(true);

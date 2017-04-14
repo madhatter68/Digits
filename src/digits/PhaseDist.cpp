@@ -65,9 +65,13 @@ void PhaseDist::Render(float *fmIn, float *out, int len, float volume)
 		b2 *= .5f;
 	
 	// Calculate PWM shaper
+#ifdef DIGITS_PRO
     float lfoInfluence = m_lfoPWM[0] * m_lfoBufs[0][0]
                         + m_lfoPWM[1] * m_lfoBufs[1][0]
                         + m_lfoPWM[2] * m_lfoBufs[2][0];
+#else
+    float lfoInfluence = m_lfoPWM[0] * m_lfoBufs[0][0];
+#endif
 	float pwmWidth = m_pwmWidth + lfoInfluence;
 	if (pwmWidth > Voice::kPWMMinimum + Voice::kPWMRange) pwmWidth = Voice::kPWMMinimum + Voice::kPWMRange;
 	if (pwmWidth < Voice::kPWMMinimum) pwmWidth = Voice::kPWMMinimum;
@@ -139,10 +143,12 @@ void PhaseDist::Render(float *fmIn, float *out, int len, float volume)
         float lfoInfluence = 0;
         if (m_lfoPitch[0])
             lfoInfluence += m_lfoBufs[0][i] * m_lfoPitch[0];
+#ifdef DIGITS_PRO
         if (m_lfoPitch[1])
             lfoInfluence += m_lfoBufs[1][i] * m_lfoPitch[1];
         if (m_lfoPitch[2])
             lfoInfluence += m_lfoBufs[2][i] * m_lfoPitch[2];
+#endif
 		m_pos += m_delta + (m_delta * lfoInfluence);
 		while (m_pos >= 1.0f)
 		{

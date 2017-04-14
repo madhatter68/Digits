@@ -739,13 +739,13 @@ void Voice::SetParameter(int index, float value)
         case VstCore::kModLFO1Amp:
             SetModWheelLFO1Amp(value);
             break;
+#if DIGITS_PRO
         case VstCore::kAftertouchShaper:
             SetAftertouchShaper(value);
             break;
         case VstCore::kAftertouchLFO1Amp:
             SetAftertouchLFO1Amp(value);
             break;
-#if DIGITS_PRO
         case VstCore::kAmpRateScale:
             m_ampRateScale = value;
             break;

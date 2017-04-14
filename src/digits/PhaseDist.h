@@ -59,8 +59,10 @@ public:
 		m_ampBuf = ampBuf->Data();
 		m_shpBuf = shpBuf->Data();
 		m_lfoBufs[0] = lfoBufs[0]->Data();
+#ifdef DIGITS_PRO
 		m_lfoBufs[1] = lfoBufs[1]->Data();
 		m_lfoBufs[2] = lfoBufs[2]->Data();
+#endif
 	}
 	
 	void SetLFOShaper(int lfo, float value) { m_lfoShaper[lfo] = value; }

@@ -296,11 +296,12 @@ VstCore::VstCore(audioMasterCallback audioMaster) :
         setParameter(kO1ShpMod, .25f);
         setParameter(kO2ShpMod, .25f);
         setParameter(kLFORepeat, 1.0f);
+#ifdef DIGITS_PRO
         setParameter(kLFO2Repeat, 1.0f);
         setParameter(kLFO3Repeat, 1.0f);
         setParameter(kPitchbendUp, 2.0f/24.0f);
         setParameter(kPitchbendDn, 2.0f/24.0f);
-        
+#endif        
 		m_curProgram = m_pbList.GetCurPatch();
     }
     else
@@ -367,13 +368,14 @@ VstCore::VstCore(audioMasterCallback audioMaster) :
 
 void VstCore::setProgram(VstInt32 program)
 {
-    return;
-    
-    PatchBankList::fileList_t patchNames = m_pbList.GetPatchList();
-    m_curProgram = program;
 #ifdef BUILTINPATCHES
     setChunk(presetBank[program], 512);
 #else
+    return;
+
+    PatchBankList::fileList_t patchNames = m_pbList.GetPatchList();
+    m_curProgram = program;
+
 	if (program >= 0 && program < patchNames.size())
 	{
         m_pbList.SetCurPatch(program);
@@ -703,7 +705,7 @@ void VstCore::NoteOn(int pitch, int velocity)
         else
         {
             int i = NextFreeVoice();
-            fprintf(stderr, "next free voice %d. isSubVoice %d\n", i, (int)m_voices[i]->IsSubVoice());
+            //fprintf(stderr, "next free voice %d. isSubVoice %d\n", i, (int)m_voices[i]->IsSubVoice());
             if (m_alwaysGlide) {
                 m_voices[i]->NoteOn(m_timestampClock, GetDelta(m_lastPitch-m_bendDnAmt), GetDelta(m_lastPitch+m_bendUpAmt), GetDelta(m_lastPitch), pitch, velocity, m_resetOscs);
                 m_voices[i]->InitiateGlide(GetDelta(pitch), GetDelta(pitch+m_bendUpAmt), GetDelta(pitch-m_bendDnAmt));
@@ -1192,14 +1194,14 @@ void VstCore::setParameter(VstInt32 index, float value)
         return;
     }
 	
+#ifdef DIGITS_PRO
     if (index == kResetOscs)
     {
-#ifdef DIGITS_PRO
         m_resetOscs = value < .5? false : true;
-#else
-        m_resetOscs = false;
-#endif
     }
+#else
+    m_resetOscs = false;
+#endif
 	if (index == kOrch)
 	{
         if ((m_orch > 0 && value == 0) || (m_orch == 0 && value > 0))
@@ -1307,6 +1309,7 @@ void VstCore::setParameter(VstInt32 index, float value)
     {
         SetChorusFlanger(value < .5f);
     }
+#ifdef DIGITS_PRO
     else if (index == VstCore::kMonoMode)
     {
         if (value < .5f) {
@@ -1340,6 +1343,7 @@ void VstCore::setParameter(VstInt32 index, float value)
     {
         m_bendDnAmt = 1 + (int)(value*24);
     }
+#endif
 	else if (index == kGain)
 	{
 		// TODO : dB?
@@ -1417,12 +1421,14 @@ void VstCore::getParameterDisplay(VstInt32 index, char *text)
 			break;			
 		case kO2Vol:
             break;
+#ifdef DIGITS_PRO
         case kResetOscs:
             if (value < .5)
 				vst_strncpy(text, "Free", kVstMaxParamStrLen);
             else
 				vst_strncpy(text, "Reset", kVstMaxParamStrLen);
             break;
+#endif
 		case kResoVol:
 			break;
 		case kResoWave:
@@ -1494,8 +1500,10 @@ void VstCore::getParameterDisplay(VstInt32 index, char *text)
 				vst_strncpy(text, "RampDn", kVstMaxParamStrLen);
 			break;
         case kLFORate:
+#ifdef DIGITS_PRO
         case kLFO2Rate:
         case kLFO3Rate:
+#endif
         {
             // Sorry; there's cut n paste here from sheer laziness :)
             // Copied from Voice::ExpShape
@@ -1507,13 +1515,16 @@ void VstCore::getParameterDisplay(VstInt32 index, char *text)
             break;
         }
         case kLFORepeat:
+#ifdef DIGITS_PRO
         case kLFO2Repeat:
         case kLFO3Repeat:
+#endif
             if (value < 1.0f)
                 snprintf(text, kVstMaxParamStrLen, "%dx", (int)(1+value*4.0f));
             else
                 vst_strncpy(text, "On", kVstMaxParamStrLen);
             break;
+#ifdef DIGITS_PRO
         case kMonoMode:
 			if (value < .25)
 				vst_strncpy(text, "Poly", kVstMaxParamStrLen);
@@ -1549,6 +1560,7 @@ void VstCore::getParameterDisplay(VstInt32 index, char *text)
         case kPitchbendUp:
             snprintf(text, kVstMaxParamStrLen, "%d", 1 + (int)(value*24));
             break;
+#endif
 		case kPulseWidth:
 		case kVelShaper:
 		case kVelVolume:
