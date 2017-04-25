@@ -132,6 +132,8 @@ protected:
 #include "PatchBankListWin.h"
 #elif __APPLE__
 #include "PatchBankListMac.h"
+#elif __linux__
+#include "PatchBankListLinux.h"
 #else
 #warning "Creating empty PatchBankList implementation for this platform!"
 

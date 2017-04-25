@@ -371,7 +371,7 @@ void VstCore::setProgram(VstInt32 program)
 #ifdef BUILTINPATCHES
     setChunk(presetBank[program], 512);
 #else
-    return;
+    //return;
 
     PatchBankList::fileList_t patchNames = m_pbList.GetPatchList();
     m_curProgram = program;
