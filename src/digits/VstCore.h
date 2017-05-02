@@ -197,6 +197,7 @@ public:
 	virtual void setProgram(VstInt32 program);
 	virtual void getProgramName(char *name);
 	virtual void setProgramName(char *name);
+    virtual bool getProgramNameIndexed(VstInt32 category, VstInt32 program, char* name);
     // The non-VST SetProgramName. We use this because it's better, and Digits won't let
     // you permanently rename patches from solely within the DAW anyway/
     // SetProgram is also a non-VST variant here (notice capitalization). Both these functions

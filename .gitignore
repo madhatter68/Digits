@@ -1,0 +1,6 @@
+vstsdk2.4
+linux/*.o
+linux/*.cpp
+linux/*.h
+linux/*.so
+cscope.*

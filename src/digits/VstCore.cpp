@@ -438,6 +438,17 @@ void VstCore::getProgramName(char *name)
     vst_strncpy(name, m_curProgramName.c_str(), kVstMaxProgNameLen);
 }
 
+bool VstCore::getProgramNameIndexed(VstInt32 category, VstInt32 program, char* name) 
+{
+    PatchBankList::fileList_t patchNames = m_pbList.GetPatchList();
+    if ((0 <= program) && (program < patchNames.size())) {
+        vst_strncpy(name, patchNames[program].c_str(), kVstMaxProgNameLen);
+        return true;
+    }
+    return false;
+}
+
+
 void VstCore::ZeroPatch()
 {
 	memset(m_simpleProgram, 0, sizeof(float)*kNumParams);
