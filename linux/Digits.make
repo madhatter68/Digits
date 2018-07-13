@@ -1,7 +1,7 @@
 TARGET = DigitsVST.so 
 
 CPP = g++
-CXXFLAGS = -fPIC -DPIC -Wall -O3 -D__cdecl="" -DNO_EDITOR -DDIGITS_PRO -I../vstsdk2.4 -fvisibility=hidden
+CXXFLAGS = -fPIC -DPIC -Wall -Wno-narrowing -O3 -D__cdecl="" -DNO_EDITOR -DDIGITS_PRO -I../vstsdk2.4 -fvisibility=hidden
 #CXXFLAGS = -fPIC -DPIC -Wall -O3 -D__cdecl="" -DNO_EDITOR -DBUILTINPATCHES -I../vstsdk2.4 -fvisibility=hidden
 #CXXFLAGS = -fPIC -DPIC -Wall -g -O3 -D__cdecl="" -DNO_EDITOR -DBUILTINPATCHES -I../vstsdk2.4 -fvisibility=hidden
 
